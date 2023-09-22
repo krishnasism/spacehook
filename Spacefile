@@ -1,0 +1,9 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: src
+    src: src
+    engine: python3.9
+    primary: true
+    run: uvicorn main:app
+    dev: uvicorn main:app --reload

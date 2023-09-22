@@ -1,0 +1,7 @@
+fastapi==0.92.0
+httpx==0.23.2
+pydantic==1.10.4
+python-multipart==0.0.6
+uvicorn==0.20.0
+deta==1.2.0
+black==23.1.0
