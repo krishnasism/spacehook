@@ -1,5 +1,7 @@
 from fastapi import Request
 from deta import Deta
+from datetime import datetime
+
 deta = Deta()
 
 base = deta.Base("requests")
@@ -16,5 +18,6 @@ async def put_request_in_detabase(request: Request):
         "user_agent": request.headers.get("user-agent"),
         "remote_address": request.client.host,
         "body": str(await request.body()),
+        "timestamp": str(datetime.utcnow()),
     }
     base.put(request_data)
