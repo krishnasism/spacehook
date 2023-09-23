@@ -16,6 +16,11 @@
                         </th>
                         <th scope="col" class="py-4">
                             <div class="flex items-center">
+                                Endpoint
+                            </div>
+                        </th>
+                        <th scope="col" class="py-4">
+                            <div class="flex items-center">
                                 Created (UTC)
                             </div>
                         </th>
@@ -26,6 +31,7 @@
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="">{{ request.key }}</td>
                         <td class="">{{ request.method }}</td>
+                        <td class="">{{ request.endpoint }}</td>
                         <td class="py-4">{{ request.timestamp }}</td>
                     </tr>
                 </tbody>

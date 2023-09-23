@@ -1,14 +1,15 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from deta import Deta
-from utils import put_request_in_detabase
+from routes.api import router
 
-# Deps
-deta = Deta()
-base = deta.Base("requests")
-app = FastAPI()
+def get_application() -> FastAPI:
+    application = FastAPI()
+    application.include_router(router)
+    return application
+
+
+app = get_application()
 
 origins = [
     "http://localhost",
@@ -22,52 +23,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/")
-async def receive_get_request(request: Request):
-    await put_request_in_detabase(request)
-    return JSONResponse(
-        content={'message': 'success'},
-        status_code=200,
-    )
-
-
-@app.post("/")
-async def receive_post_request(request: Request):
-    await put_request_in_detabase(request)
-    return JSONResponse(
-        content={'message': 'success'},
-        status_code=200,
-    )
-
-
-@app.patch("/")
-async def receive_patch_request(request: Request):
-    await put_request_in_detabase(request)
-    return JSONResponse(
-        content={'message': 'success'},
-        status_code=200,
-    )
-
-@app.delete("/")
-async def receive_delete_request(request: Request):
-    await put_request_in_detabase(request)
-    return JSONResponse(
-        content={'message': 'success'},
-        status_code=200,
-    )
-
-@app.put("/")
-async def receive_put_request(request: Request):
-    await put_request_in_detabase(request)
-    return JSONResponse(
-        content={'message': 'success'},
-        status_code=200,
-    )
-
-@app.get("/all-requests")
-async def get_all_requests():
-    return base.fetch().items
 
 
 app.mount("/public", StaticFiles(directory=".", html="true"), name="static")
