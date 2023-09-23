@@ -6,7 +6,8 @@ deta = Deta()
 
 requests_collection = deta.Base("requests")
 
-async def put_request_in_detabase(request: Request, endpoint='/'):
+
+async def put_request_in_detabase(request: Request, endpoint="/"):
     request_data = {
         "method": request.method,
         "url": str(request.url),
@@ -22,4 +23,3 @@ async def put_request_in_detabase(request: Request, endpoint='/'):
         "endpoint": endpoint,
     }
     requests_collection.put(request_data)
-

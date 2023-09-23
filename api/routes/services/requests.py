@@ -8,6 +8,7 @@ deta = Deta()
 requests_collection = deta.Base("requests")
 responses_collection = deta.Base("responses")
 
+
 @router.get("/")
 async def receive_get_request(request: Request):
     await put_request_in_detabase(request)
@@ -60,7 +61,7 @@ async def get_all_requests():
 
 @router.get("/hook/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    response = responses_collection.fetch({'endpoint': rest_of_path})
+    response = responses_collection.fetch({"endpoint": rest_of_path})
     if response.count == 0:
         return JSONResponse(
             content={"message": "Not found"},
@@ -68,8 +69,8 @@ async def serve_my_app(request: Request, rest_of_path: str):
         )
     await put_request_in_detabase(request, endpoint=rest_of_path)
     return JSONResponse(
-        content=response.items[0].get('response'),
-        status_code=int(response.items[0].get('statuscode')),
+        content=response.items[0].get("response"),
+        status_code=int(response.items[0].get("statuscode")),
     )
 
 

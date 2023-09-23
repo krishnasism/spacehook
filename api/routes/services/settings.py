@@ -18,7 +18,7 @@ async def get_settings():
 @router.post("/request")
 async def post_new_request(item: ResponseRequest):
     updated = False
-    endpoint = item.endpoint.strip('/')
+    endpoint = item.endpoint.strip("/")
     data = responses_collection.fetch({"endpoint": endpoint})
     if data.count > 1:
         updated = True
