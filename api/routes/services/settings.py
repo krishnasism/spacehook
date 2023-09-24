@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query, Form
 from fastapi.responses import JSONResponse
 from rrequests.models import ResponseRequest
 
@@ -14,6 +14,20 @@ responses_collection = deta.Base("responses")
 async def get_settings():
     return responses_collection.fetch()
 
+@router.get("/request")
+async def get_request(request_id: str = Query()):
+    _request = requests_collection.get(request_id)
+    return _request
+
+@router.delete("/request")
+async def delete_request(request_id: str = Query()):
+    requests_collection.delete(request_id)
+    return JSONResponse(
+        content={
+            "success": True,
+        },
+        status_code=200
+    )
 
 @router.post("/request")
 async def post_new_request(item: ResponseRequest):
