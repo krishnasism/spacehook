@@ -56,7 +56,7 @@ async def receive_put_request(request: Request):
 
 @router.get("/all-requests")
 async def get_all_requests():
-    return requests_collection.fetch().items
+    return requests_collection.fetch(desc=True).items
 
 
 @router.get("/hook/{rest_of_path:path}")
