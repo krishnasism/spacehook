@@ -12,7 +12,17 @@ responses_collection = deta.Base("responses")
 
 @router.get("/")
 async def get_settings():
-    return responses_collection.fetch()
+    return responses_collection.fetch().items
+
+@router.delete("/hook")
+async def delete_hook(hook_id: str):
+    responses_collection.delete(hook_id)
+    return JSONResponse(
+        content={
+            "success": True,
+        },
+        status_code=200
+    )
 
 @router.get("/request")
 async def get_request(request_id: str = Query()):

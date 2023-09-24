@@ -32,6 +32,17 @@
         <span class="mr-2">Hook</span>
       </span>
     </button>
+    <button @click="showAllHooks" type="button"
+      class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-2.5 mr-2 mb-2">
+      <span class="flex">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-5 h-5 mr-16">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="mr-2">My Hooks</span>
+      </span>
+    </button>
     <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showRequest">
       <div class="bg-white rounded-lg shadow-lg p-4"
         style="max-height: 80vh; max-width: 100vh; overflow-y: auto; position: relative;">
@@ -42,6 +53,18 @@
           </svg>
         </button>
         <ViewRequest :request="request" v-if="request != null && showRequest"></ViewRequest>
+      </div>
+    </div>
+    <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showHooksModal">
+      <div class="bg-white rounded-lg shadow-lg p-4"
+        style="max-height: 80vh; max-width: 100vh; overflow-y: auto; position: relative;">
+        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="showHooksModal = false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <HooksList :hooks="hooks" v-if="hooks != null && showHooksModal" @hook-delete="deleteHook"></HooksList>
       </div>
     </div>
 
@@ -58,20 +81,24 @@
 import RequestsList from "@/components/RequestsList.vue";
 import AddRequest from "@/components/AddRequest.vue";
 import ViewRequest from "@/components/ViewRequest.vue";
+import HooksList from "@/components/HooksList.vue";
 export default {
   components: {
     RequestsList,
     AddRequest,
     ViewRequest,
+    HooksList,
   },
   data() {
     return {
       requests: [],
       sortedRequest: [],
+      hooks: [],
       showAddRequestModal: false,
       showTopTip: true,
       showRequest: false,
       request: null,
+      showHooksModal: false,
     }
   },
   setup() {
@@ -119,6 +146,19 @@ export default {
         console.error('Error loading requests:', error);
       }
     },
+    async loadHooks() {
+      try {
+        const response = await fetch('/api/settings/');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        this.hooks = data;
+        console.log(this.hooks)
+      } catch (error) {
+        console.error('Error loading hooks:', error);
+      }
+    },
     async deleteRequest(requestId) {
       try {
         const apiUrl = '/api/settings/request?request_id=' + requestId;
@@ -137,6 +177,24 @@ export default {
         console.error('Error:', error);
       }
     },
+    async deleteHook(hookId) {
+      try {
+        const apiUrl = '/api/settings/hook?hook_id=' + hookId;
+        const response = await fetch(apiUrl, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+          },
+        });
+        if (response.status != 200) {
+          console.error('Request failed:', response.statusText);
+        } else {
+          this.loadHooks();
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    },
     async showRequestModal(requestId) {
       try {
         const response = await fetch('/api/settings/request?request_id=' + requestId);
@@ -149,6 +207,10 @@ export default {
       } catch (error) {
         console.error('Error loading request:', error);
       }
+    },
+    async showAllHooks(){
+      this.loadHooks();
+      this.showHooksModal = true;
     }
   }
 };
