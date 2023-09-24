@@ -1,21 +1,27 @@
 <template>
     <div>
         <div v-if="hooks.length==0" class="m-4">No hooks added..</div>
-        <div v-else class="relative overflow-x-auto mt-4">
+        <div v-else class="relative overflow-x-auto">
+        <h3 class="text-base font-semibold leading-7 text-gray-900">Hooks</h3>
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 h-full">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="py-4">
+                        <th scope="col" class="w-52 p-8">
                             <div class="flex items-center">
-                                Key
+                                Type
                             </div>
                         </th>
-                        <th scope="col" class="py-4">
+                        <th scope="col" class="w-52 p-8">
                             <div class="flex items-center">
                                 Endpoint
                             </div>
                         </th>
-                        <th scope="col" class="py-4">
+                        <th scope="col" class="w-52 p-8">
+                            <div class="flex items-center">
+                                Code
+                            </div>
+                        </th>
+                        <th scope="col" class="w-52 p-8">
                             <div class="flex items-center">
                                 Response
                             </div>
@@ -27,8 +33,9 @@
                 <tbody>
                     <tr v-for="hook in hooks" :key="hook.id"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td>{{ hook.key }}</td>
-                        <td>{{ hook.endpoint }}</td>
+                        <td>{{ hook.category }}</td>
+                        <td>/api/hook/{{ hook.endpoint }}</td>
+                        <td>{{ hook.statuscode }}</td>
                         <td>{{ hook.response }}</td>
                         <td>
                             <button @click="deleteHook(hook.key)">

@@ -56,8 +56,8 @@
       </div>
     </div>
     <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showHooksModal">
-      <div class="bg-white rounded-lg shadow-lg p-4"
-        style="max-height: 80vh; max-width: 100vh; overflow-y: auto; position: relative;">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 p-8"
+        style="max-height: 80vh; max-width: 100vh; overflow-y: auto;">
         <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="showHooksModal = false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
             class="w-6 h-6">
@@ -208,7 +208,7 @@ export default {
         console.error('Error loading request:', error);
       }
     },
-    async showAllHooks(){
+    async showAllHooks() {
       this.loadHooks();
       this.showHooksModal = true;
     }
