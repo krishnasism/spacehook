@@ -53,6 +53,7 @@ async def receive_put_request(request: Request):
         status_code=200,
     )
 
+
 @router.get("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
     response = responses_collection.fetch({"endpoint": rest_of_path})
@@ -66,4 +67,3 @@ async def serve_my_app(request: Request, rest_of_path: str):
         content=response.items[0].get("response"),
         status_code=int(response.items[0].get("statuscode")),
     )
-

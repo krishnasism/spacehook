@@ -10,7 +10,7 @@
       </svg>
       <span class="sr-only">Info</span>
       <div class="ml-3 text-sm font-medium">
-        You can start calling the /api/hook endpoint!
+        You can start calling the /api/hook/ endpoint!
       </div>
       <button type="button" @click="showTopTip = false"
         class="ml-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
@@ -43,18 +43,21 @@
         <span class="mr-2">My Hooks</span>
       </span>
     </button>
-    <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showRequest">
-      <div class="bg-white rounded-lg shadow-lg p-4"
-        style="max-height: 80vh; max-width: 100vh; overflow-y: auto; position: relative;">
-        <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="showRequest = false">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-            class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-        <ViewRequest :request="request" v-if="request != null && showRequest"></ViewRequest>
+    <transition name="modal-fade" mode="out-in">
+      <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showRequest">
+        <div class="bg-white rounded-lg shadow-lg p-4"
+          style="max-height: 80vh; max-width: 100vh; overflow-y: auto; position: relative;">
+          <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="showRequest = false">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+              class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <ViewRequest :request="request" v-if="request != null && showRequest"></ViewRequest>
+        </div>
       </div>
-    </div>
+    </transition>
+    <transition name="modal-fade" mode="out-in">
     <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showHooksModal">
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 p-8"
         style="max-height: 80vh; max-width: 100vh; overflow-y: auto;">
@@ -67,12 +70,14 @@
         <HooksList :hooks="hooks" v-if="hooks != null && showHooksModal" @hook-delete="deleteHook" :hooksLoading="hooksLoading"></HooksList>
       </div>
     </div>
-
+  </transition>
+    <transition name="modal-fade" mode="out-in">
     <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showAddRequestModal">
       <div class="bg-white rounded-lg shadow-lg p-4">
         <AddRequest @close="showAddRequestModal = false" @submit="submitNewRequest"></AddRequest>
       </div>
     </div>
+    </transition>
     <div v-if="loading"><LoadingCircle/></div>
     <RequestsList v-else :requests="requests" @request-clicked="showRequestModal" @request-delete="deleteRequest"></RequestsList>
   </div>
@@ -224,6 +229,7 @@ export default {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
+        console.log(data);
         this.request = data;
         this.showRequest = true;
       } catch (error) {
@@ -238,3 +244,14 @@ export default {
 };
 
 </script>
+<style scoped>
+/* Define CSS transitions for entering and leaving transitions */
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.modal-fade-enter, .modal-fade-leave-to {
+  opacity: 0;
+}
+</style>

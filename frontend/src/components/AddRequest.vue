@@ -34,6 +34,7 @@
                             <option value="delete">DELETE</option>
                         </select>
                     </div>
+                    
                     <div class="sm:col-span-2">
                         <label for="response"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Response</label>

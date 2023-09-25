@@ -14,6 +14,7 @@ responses_collection = deta.Base("responses")
 async def get_settings():
     return responses_collection.fetch(desc=True).items
 
+
 @router.delete("/hook")
 async def delete_hook(hook_id: str):
     responses_collection.delete(hook_id)
@@ -21,13 +22,15 @@ async def delete_hook(hook_id: str):
         content={
             "success": True,
         },
-        status_code=200
+        status_code=200,
     )
+
 
 @router.get("/request")
 async def get_request(request_id: str = Query()):
     _request = requests_collection.get(request_id)
     return _request
+
 
 @router.delete("/request")
 async def delete_request(request_id: str = Query()):
@@ -36,8 +39,9 @@ async def delete_request(request_id: str = Query()):
         content={
             "success": True,
         },
-        status_code=200
+        status_code=200,
     )
+
 
 @router.post("/request")
 async def post_new_request(item: ResponseRequest):
