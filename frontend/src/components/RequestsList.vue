@@ -6,7 +6,6 @@
                     <tr>
                         <th scope="col" class="py-4">
                             <div class="flex items-center">
-                                Key
                             </div>
                         </th>
                         <th scope="col" class="py-4">
@@ -30,8 +29,12 @@
                 <tbody>
                     <tr v-for="request in requests" :key="request.id"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class=""><button class="text-blue-700" @click="viewRequest(request.key)">{{ request.key
-                        }}</button></td>
+                        <td class="ml-2 p-2"><button class="text-blue-700" @click="viewRequest(request.key)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+</svg>
+
+
+                            </button></td>
                         <td class="">{{ request.method }}</td>
                         <td class="">{{ request.endpoint }}</td>
                         <td class="py-4">{{ request.timestamp }}</td>
@@ -48,7 +51,7 @@
                 </tbody>
             </table>
         </div>
-        <p v-if="requests.length == 0">Seems a bit lonely here... try calling /api and it will pop up!</p>
+        <p v-if="requests.length == 0">Its a bit lonely here... try calling /api!</p>
     </div>
 </template>
   

@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <div v-if="hooksLoading">
+        <LoadingCircle></LoadingCircle>
+    </div>
+    <div v-else>
         <div v-if="hooks.length==0" class="m-4">No hooks added..</div>
         <div v-else class="relative overflow-x-auto">
         <h3 class="text-base font-semibold leading-7 text-gray-900">Hooks</h3>
@@ -54,13 +57,23 @@
 </template>
   
 <script>
+import LoadingCircle from './LoadingCircle.vue';
+
 export default {
     name: 'HooksList',
+    components: {
+        LoadingCircle,
+    },
     props: {
         hooks: {
             type: Array,
             required: true,
         },
+        hooksLoading: {
+            type: Boolean,
+            required: false,
+            default: false,
+        }
     },
     data() {
         return {

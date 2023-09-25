@@ -64,7 +64,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <HooksList :hooks="hooks" v-if="hooks != null && showHooksModal" @hook-delete="deleteHook"></HooksList>
+        <HooksList :hooks="hooks" v-if="hooks != null && showHooksModal" @hook-delete="deleteHook" :hooksLoading="hooksLoading"></HooksList>
       </div>
     </div>
 
@@ -73,7 +73,8 @@
         <AddRequest @close="showAddRequestModal = false" @submit="submitNewRequest"></AddRequest>
       </div>
     </div>
-    <RequestsList :requests="requests" @request-clicked="showRequestModal" @request-delete="deleteRequest"></RequestsList>
+    <div v-if="loading"><LoadingCircle/></div>
+    <RequestsList v-else :requests="requests" @request-clicked="showRequestModal" @request-delete="deleteRequest"></RequestsList>
   </div>
 </template>
 
@@ -82,12 +83,14 @@ import RequestsList from "@/components/RequestsList.vue";
 import AddRequest from "@/components/AddRequest.vue";
 import ViewRequest from "@/components/ViewRequest.vue";
 import HooksList from "@/components/HooksList.vue";
+import LoadingCircle from "@/components/LoadingCircle.vue";
 export default {
   components: {
     RequestsList,
     AddRequest,
     ViewRequest,
     HooksList,
+    LoadingCircle,
   },
   data() {
     return {
@@ -99,14 +102,17 @@ export default {
       showRequest: false,
       request: null,
       showHooksModal: false,
+      loading: true,
+      hooksLoading: false,
     }
   },
   setup() {
   },
   async mounted() {
     this.loading = true;
-    this.loadRequests();
-    setInterval(this.loadRequests, 5000);
+    await this.loadRequests();
+    setInterval(this.loadRequests, 3000);
+    this.loading = false;
   },
   computed: {
   },
@@ -147,6 +153,7 @@ export default {
       }
     },
     async loadHooks() {
+      this.hooksLoading = true;
       try {
         const response = await fetch('/api/settings/');
         if (!response.ok) {
@@ -154,10 +161,10 @@ export default {
         }
         const data = await response.json();
         this.hooks = data;
-        console.log(this.hooks)
       } catch (error) {
         console.error('Error loading hooks:', error);
       }
+      this.hooksLoading = false;
     },
     async deleteRequest(requestId) {
       try {
