@@ -48,7 +48,7 @@ async def post_new_request(item: ResponseRequest):
     updated = False
     endpoint = item.endpoint.strip("/")
     data = responses_collection.fetch({"endpoint": endpoint})
-    if data.count > 1:
+    if data.count > 0:
         updated = True
         for existing_item in data.items:
             responses_collection.delete(existing_item.get("key"))
@@ -58,6 +58,7 @@ async def post_new_request(item: ResponseRequest):
             "statuscode": item.statuscode,
             "category": item.category,
             "response": item.response,
+            "delay": item.delay,
         }
     )
     return JSONResponse(

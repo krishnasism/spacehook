@@ -44,7 +44,7 @@
       </span>
     </button>
     <transition name="modal-fade" mode="out-in">
-      <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showRequest">
+      <div class="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50" v-if="showRequest">
         <div class="bg-white rounded-lg shadow-lg p-4"
           style="max-height: 80vh; max-width: 100vh; overflow-y: auto; position: relative;">
           <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="showRequest = false">
@@ -58,7 +58,7 @@
       </div>
     </transition>
     <transition name="modal-fade" mode="out-in">
-    <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showHooksModal">
+    <div class="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50" v-if="showHooksModal">
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 p-8"
         style="max-height: 80vh; max-width: 100vh; overflow-y: auto;">
         <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="showHooksModal = false">
@@ -72,7 +72,7 @@
     </div>
   </transition>
     <transition name="modal-fade" mode="out-in">
-    <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" v-if="showAddRequestModal">
+    <div class="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50" v-if="showAddRequestModal">
       <div class="bg-white rounded-lg shadow-lg p-4">
         <AddRequest @close="showAddRequestModal = false" @submit="submitNewRequest"></AddRequest>
       </div>
@@ -80,6 +80,12 @@
     </transition>
     <div v-if="loading"><LoadingCircle/></div>
     <RequestsList v-else :requests="requests" @request-clicked="showRequestModal" @request-delete="deleteRequest"></RequestsList>
+    <Transition enter-active-class="duration-300 ease-out" enter-from-class="transform opacity-0"
+      enter-to-class="opacity-100" leave-active-class="duration-200 ease-in" leave-from-class="opacity-100"
+      leave-to-class="transform opacity-0">
+      <FailureToast class="z-20" style="position: fixed; bottom: 0; right: 20;" v-if="showFailureToast" :message="failureToastMessage"
+        @close-toast="showFailureToast = false"></FailureToast>
+    </Transition>
   </div>
 </template>
 
@@ -89,6 +95,7 @@ import AddRequest from "@/components/AddRequest.vue";
 import ViewRequest from "@/components/ViewRequest.vue";
 import HooksList from "@/components/HooksList.vue";
 import LoadingCircle from "@/components/LoadingCircle.vue";
+import FailureToast from "@/components/FailureToast.vue";
 export default {
   components: {
     RequestsList,
@@ -96,6 +103,7 @@ export default {
     ViewRequest,
     HooksList,
     LoadingCircle,
+    FailureToast,
   },
   data() {
     return {
@@ -109,6 +117,8 @@ export default {
       showHooksModal: false,
       loading: true,
       hooksLoading: false,
+      failureToastMessage: '',
+      showFailureToast: false,
     }
   },
   setup() {
@@ -155,6 +165,10 @@ export default {
         });
         if (response.status != 200) {
           console.error('Request failed:', response.statusText);
+          this.showFailureToast = true;
+          this.failureToastMessage = 'Unable to add new request!';
+        } else {
+          this.showAddRequestModal = false;
         }
       } catch (error) {
         console.error('Error:', error);

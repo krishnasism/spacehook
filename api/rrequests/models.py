@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class ResponseRequest(BaseModel):
     endpoint: str
-    statuscode: str
+    statuscode: int
     category: str
     response: str
+    delay: int

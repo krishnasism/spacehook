@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from db.detabase import put_request_in_detabase
 from deta import Deta
+import asyncio
 
 router = APIRouter()
 deta = Deta()
@@ -63,6 +64,8 @@ async def serve_my_app(request: Request, rest_of_path: str):
             status_code=404,
         )
     await put_request_in_detabase(request, endpoint=rest_of_path)
+    delay = int(response.items[0].get("delay"))
+    await asyncio.sleep(min(19, delay))
     return JSONResponse(
         content=response.items[0].get("response"),
         status_code=int(response.items[0].get("statuscode")),
