@@ -2,7 +2,8 @@
     <div>
         <section class="bg-white dark:bg-gray-900">
             <div class="max-w-2xl px-4 py-8 mx-auto lg:py-8">
-                <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add Request</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Add Hook</h2>
+                <p class="mb-4 max-w-2xl text-sm leading-6 text-gray-500">All hooks are public</p>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                     <div class="sm:col-span-2">
                         <label for="name"
@@ -41,9 +42,34 @@
                             placeholder="Response"></textarea>
                     </div>
                 </div>
+                <div id="alert-4"
+                    v-if="showAddRequestAlert"
+                    class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
+                    role="alert">
+                    <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <span class="sr-only">Warning</span>
+                    <div class="ml-3 text-sm font-medium">
+                        Please fill in all fields!
+                    </div>
+                    <button type="button"
+                        @click="showAddRequestAlert = false"
+                        class="ml-auto -mx-1.5 -my-1.5 bg-yellow-50 text-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 p-1.5 hover:bg-yellow-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-yellow-300 dark:hover:bg-gray-700"
+                        data-dismiss-target="#alert-4" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                    </button>
+                </div>
                 <div class="flex items-center space-x-4">
                     <button type="submit" @click="saveRequest"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-1 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                         Save
                     </button>
                     <button type="button" @click="closeModal"
@@ -66,6 +92,7 @@ export default {
             statuscode: '200',
             category: 'get',
             response: '',
+            showAddRequestAlert: false,
         };
     },
     methods: {
@@ -73,6 +100,11 @@ export default {
             this.$emit("close", true);
         },
         saveRequest() {
+            if (this.endpoint == '' || this.statuscode == '' || this.category == '' || this.response == '') {
+                this.showAddRequestAlert = true;
+                return;
+            }
+            this.showAddRequestAlert = false;
             const requestData = {
                 endpoint: this.endpoint,
                 statuscode: this.statuscode,
