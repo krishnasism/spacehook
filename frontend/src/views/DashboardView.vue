@@ -113,10 +113,25 @@ export default {
     await this.loadRequests();
     setInterval(this.loadRequests, 3000);
     this.loading = false;
+    document.addEventListener("keydown", this.handleKeyDown);
+  },
+  beforeUnmount(){
+    document.removeEventListener("keydown", this.handleKeyDown);
   },
   computed: {
   },
   methods: {
+    handleKeyDown(event) {
+      if (event.key === "Escape") {
+        this.onEscKeyPressed();
+      }
+    },
+    onEscKeyPressed() {
+      this.showAddRequestModal = false;
+      this.showHooksModal = false;
+      this.showRequest = false;
+
+    },
     async openAddRequest(evt) {
       if (this.showAddRequestModal) {
         return;
