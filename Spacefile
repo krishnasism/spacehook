@@ -4,13 +4,14 @@ icon: ./spacehook.png
 micros:
   - name: frontend
     src: ./frontend
-    public: true
     engine: vue
     primary: true
 
   - name: api
     src: api
     engine: python3.9
-    public: true
     run: uvicorn main:app
     dev: uvicorn main:app --reload
+    public_routes:
+      - "/hook/*"
+      - "/hook"

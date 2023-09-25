@@ -51,7 +51,7 @@
                 </tbody>
             </table>
         </div>
-        <p v-if="requests.length == 0">Its a bit lonely here... try calling /api!</p>
+        <p v-if="requests.length == 0">Its a bit lonely here... try calling /api/hook!</p>
     </div>
 </template>
   
