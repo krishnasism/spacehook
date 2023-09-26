@@ -58,10 +58,13 @@
         </div>
       </div>
     </transition>
-    <div v-if="loading">
+    <div v-if="loading || loadingInner"
+      style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; justify-content: center; align-items: center;">
       <LoadingCircle />
     </div>
-    <RequestsList v-else :requests="requests" @request-clicked="showRequestModal" @request-delete="deleteRequest">
+
+    <RequestsList v-if="!loading" :requests="requests" @request-clicked="showRequestModal"
+      @request-delete="deleteRequest">
     </RequestsList>
     <Transition enter-active-class="duration-300 ease-out" enter-from-class="transform opacity-0"
       enter-to-class="opacity-100" leave-active-class="duration-200 ease-in" leave-from-class="opacity-100"
@@ -97,7 +100,7 @@
           <span class="sr-only">New Hook</span>
         </button>
         <div id="tooltip-add-hook" role="tooltip"
-        class="w-auto absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+          class="w-auto absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
           New Hook
           <div class="tooltip-arrow" data-popper-arrow></div>
         </div>
@@ -144,6 +147,7 @@ export default {
       request: null,
       showHooksModal: false,
       loading: true,
+      loadingInner: false,
       hooksLoading: false,
       failureToastMessage: '',
       showFailureToast: false,
@@ -229,6 +233,7 @@ export default {
       this.hooksLoading = false;
     },
     async deleteRequest(requestId) {
+      this.loadingInner = true;
       try {
         const apiUrl = '/api/settings/request?request_id=' + requestId;
         const response = await fetch(apiUrl, {
@@ -245,6 +250,7 @@ export default {
       } catch (error) {
         console.error('Error:', error);
       }
+      this.loadingInner = false;
     },
     async deleteHook(hookId) {
       try {
@@ -265,6 +271,7 @@ export default {
       }
     },
     async showRequestModal(requestId) {
+      this.loadingInner = true;
       try {
         const response = await fetch('/api/settings/request?request_id=' + requestId);
         if (!response.ok) {
@@ -277,6 +284,7 @@ export default {
       } catch (error) {
         console.error('Error loading request:', error);
       }
+      this.loadingInner = false;
     },
     async showAllHooks() {
       this.loadHooks();
