@@ -32,6 +32,8 @@
                             <option value="put">PUT</option>
                             <option value="patch">PATCH</option>
                             <option value="delete">DELETE</option>
+                            <option value="options">OPTIONS</option>
+                            <option value="head">HEAD</option>
                         </select>
                     </div>
                     <div class="w-full">
