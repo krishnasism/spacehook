@@ -75,7 +75,7 @@ async def receive_put_request(request: Request):
 
 @router.get("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    return handle_rest_of_path(request, rest_of_path)
+    return await handle_rest_of_path(request, rest_of_path)
 
 
 @router.post("/{rest_of_path:path}")
