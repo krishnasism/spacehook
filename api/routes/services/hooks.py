@@ -55,8 +55,60 @@ async def receive_put_request(request: Request):
     )
 
 
+@router.head("/")
+async def receive_put_request(request: Request):
+    await put_request_in_detabase(request)
+    return JSONResponse(
+        content={"message": "success"},
+        status_code=200,
+    )
+
+
+@router.options("/")
+async def receive_put_request(request: Request):
+    await put_request_in_detabase(request)
+    return JSONResponse(
+        content={"message": "success"},
+        status_code=200,
+    )
+
+
 @router.get("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
+    return handle_rest_of_path(request, rest_of_path)
+
+
+@router.post("/{rest_of_path:path}")
+async def serve_my_app(request: Request, rest_of_path: str):
+    return await handle_rest_of_path(request, rest_of_path)
+
+
+@router.patch("/{rest_of_path:path}")
+async def serve_my_app(request: Request, rest_of_path: str):
+    return await handle_rest_of_path(request, rest_of_path)
+
+
+@router.delete("/{rest_of_path:path}")
+async def serve_my_app(request: Request, rest_of_path: str):
+    return await handle_rest_of_path(request, rest_of_path)
+
+
+@router.put("/{rest_of_path:path}")
+async def serve_my_app(request: Request, rest_of_path: str):
+    return await handle_rest_of_path(request, rest_of_path)
+
+
+@router.head("/{rest_of_path:path}")
+async def serve_my_app(request: Request, rest_of_path: str):
+    return await handle_rest_of_path(request, rest_of_path)
+
+
+@router.options("/{rest_of_path:path}")
+async def serve_my_app(request: Request, rest_of_path: str):
+    return await handle_rest_of_path(request, rest_of_path)
+
+
+async def handle_rest_of_path(request: Request, rest_of_path: str):
     response = responses_collection.fetch({"endpoint": rest_of_path})
     if response.count == 0:
         return JSONResponse(
