@@ -75,41 +75,43 @@ async def receive_put_request(request: Request):
 
 @router.get("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path)
+    return await handle_rest_of_path(request, rest_of_path, "get")
 
 
 @router.post("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path)
+    return await handle_rest_of_path(request, rest_of_path, "post")
 
 
 @router.patch("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path)
+    return await handle_rest_of_path(request, rest_of_path, "patch")
 
 
 @router.delete("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path)
+    return await handle_rest_of_path(request, rest_of_path, "delete")
 
 
 @router.put("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path)
+    return await handle_rest_of_path(request, rest_of_path, "put")
 
 
 @router.head("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path)
+    return await handle_rest_of_path(request, rest_of_path, "head")
 
 
 @router.options("/{rest_of_path:path}")
 async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path)
+    return await handle_rest_of_path(request, rest_of_path, "options")
 
 
-async def handle_rest_of_path(request: Request, rest_of_path: str):
-    response = responses_collection.fetch({"endpoint": rest_of_path})
+async def handle_rest_of_path(request: Request, rest_of_path: str, category: str):
+    response = responses_collection.fetch(
+        {"endpoint": rest_of_path, "category": category}
+    )
     if response.count == 0:
         return JSONResponse(
             content={"message": "Not found"},
