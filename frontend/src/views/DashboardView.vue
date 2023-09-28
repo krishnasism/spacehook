@@ -23,7 +23,8 @@
       </button>
     </div>
     <transition name="modal-fade" mode="out-in">
-      <div class="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50" v-if="showRequest">
+      <div class="fixed inset-0 flex items-center justify-center z-10 bg-black bg-gray-50 bg-opacity-50"
+        v-if="showRequest">
         <div class="bg-white rounded-lg shadow-lg p-4"
           style="max-height: 80vh; max-width: 100vh; overflow-y: auto; position: relative;">
           <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="showRequest = false">
@@ -37,7 +38,8 @@
       </div>
     </transition>
     <transition name="modal-fade" mode="out-in">
-      <div class="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50" v-if="showHooksModal">
+      <div class="fixed inset-0 flex items-center justify-center z-10 bg-black bg-gray-50 bg-opacity-50"
+        v-if="showHooksModal">
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 p-8"
           style="max-height: 80vh; max-width: 100vh; overflow-y: auto;">
           <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" @click="showHooksModal = false">
@@ -52,7 +54,8 @@
       </div>
     </transition>
     <transition name="modal-fade" mode="out-in">
-      <div class="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50" v-if="showAddRequestModal">
+      <div class="fixed inset-0 flex items-center justify-center z-10 bg-gray-50 bg-opacity-50"
+        v-if="showAddRequestModal">
         <div class="bg-white rounded-lg shadow-lg p-4">
           <AddRequest @close="showAddRequestModal = false" @submit="submitNewRequest"></AddRequest>
         </div>
@@ -62,7 +65,6 @@
       style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; justify-content: center; align-items: center;">
       <LoadingCircle />
     </div>
-
     <RequestsList v-if="!loading" :requests="requests" @request-clicked="showRequestModal"
       @request-delete="deleteRequest">
     </RequestsList>
@@ -308,5 +310,4 @@ export default {
 .tooltip {
   white-space: nowrap;
   display: inline-block;
-}
-</style>
+}</style>
