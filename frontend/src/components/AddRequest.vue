@@ -87,7 +87,7 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <button type="submit" @click="saveRequest"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-1 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        class="text-white purple-color focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-1 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                         Save
                     </button>
                     <button type="button" @click="closeModal"
@@ -138,4 +138,13 @@ export default {
     },
 }
 </script>
-  
+
+<style>
+.purple-color {
+  background-color: rgb(168 85 247);
+}
+
+.purple-color:hover {
+  background-color: rgb(126 34 206);
+}
+</style>
