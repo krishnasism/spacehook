@@ -109,7 +109,7 @@
       </div>
       <button type="button" data-dial-toggle="speed-dial-menu-bottom-right" aria-controls="speed-dial-menu-bottom-right"
         aria-expanded="false"
-        class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
+        class="flex items-center justify-center text-white purple-color rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
         <svg class="w-5 h-5 transition-transform group-hover:rotate-45" aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -310,4 +310,14 @@ export default {
 .tooltip {
   white-space: nowrap;
   display: inline-block;
-}</style>
+}
+
+.purple-color {
+  background-color: rgb(168 85 247);
+}
+
+.purple-color:hover {
+  background-color: rgb(126 34 206);
+}
+
+</style>

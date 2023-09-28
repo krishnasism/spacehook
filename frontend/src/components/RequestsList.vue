@@ -5,7 +5,7 @@
                 class="relative w-full grid grid-cols-12 bg-white shadow p-3 gap-2 items-center cursor-pointer p-6 rounded-xl mt-2 mb-6 request-item"
                 @click="viewRequest(request.key)">
                 <div class="col-span-6 xl:-ml-5">
-                    <p class="text-blue-600 font-semibold">{{ request.method }}</p>
+                    <p class="purple-text font-semibold">{{ request.method }}</p>
                 </div>
                 <div class="md:col-start-2 col-span-6 xl:-ml-5">
                     <p class="text-sm text-gray-800 font-light">{{ ("/api/hook/" + request.endpoint).replace("//", "/") }}
@@ -57,4 +57,9 @@ export default {
 .request-item:hover {
     transform: scale(1.005);
     transition: transform 0.2s ease;
-}</style>
+}
+
+.purple-text {
+    color: rgb(168 85 247);
+}
+</style>
