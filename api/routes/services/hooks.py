@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse, PlainTextResponse
 from db.detabase import put_request_in_detabase
 from deta import Deta
 import asyncio
+from utils.enums import ResponseType
 
 router = APIRouter()
 deta = Deta()
@@ -13,8 +14,8 @@ responses_collection = deta.Base("responses")
 @router.get("/")
 async def receive_get_request(request: Request):
     await put_request_in_detabase(request)
-    return JSONResponse(
-        content={"message": "success"},
+    return PlainTextResponse(
+        content="OK",
         status_code=200,
     )
 
@@ -22,8 +23,8 @@ async def receive_get_request(request: Request):
 @router.post("/")
 async def receive_post_request(request: Request):
     await put_request_in_detabase(request)
-    return JSONResponse(
-        content={"message": "success"},
+    return PlainTextResponse(
+        content="OK",
         status_code=200,
     )
 
@@ -31,8 +32,8 @@ async def receive_post_request(request: Request):
 @router.patch("/")
 async def receive_patch_request(request: Request):
     await put_request_in_detabase(request)
-    return JSONResponse(
-        content={"message": "success"},
+    return PlainTextResponse(
+        content="OK",
         status_code=200,
     )
 
@@ -40,8 +41,8 @@ async def receive_patch_request(request: Request):
 @router.delete("/")
 async def receive_delete_request(request: Request):
     await put_request_in_detabase(request)
-    return JSONResponse(
-        content={"message": "success"},
+    return PlainTextResponse(
+        content="OK",
         status_code=200,
     )
 
@@ -49,8 +50,8 @@ async def receive_delete_request(request: Request):
 @router.put("/")
 async def receive_put_request(request: Request):
     await put_request_in_detabase(request)
-    return JSONResponse(
-        content={"message": "success"},
+    return PlainTextResponse(
+        content="OK",
         status_code=200,
     )
 
@@ -58,8 +59,8 @@ async def receive_put_request(request: Request):
 @router.head("/")
 async def receive_put_request(request: Request):
     await put_request_in_detabase(request)
-    return JSONResponse(
-        content={"message": "success"},
+    return PlainTextResponse(
+        content="OK",
         status_code=200,
     )
 
@@ -67,8 +68,8 @@ async def receive_put_request(request: Request):
 @router.options("/")
 async def receive_put_request(request: Request):
     await put_request_in_detabase(request)
-    return JSONResponse(
-        content={"message": "success"},
+    return PlainTextResponse(
+        content="OK",
         status_code=200,
     )
 
@@ -113,14 +114,35 @@ async def handle_rest_of_path(request: Request, rest_of_path: str, category: str
         {"endpoint": rest_of_path, "category": category}
     )
     if response.count == 0:
-        return JSONResponse(
-            content={"message": "Not found"},
+        return PlainTextResponse(
+            content="NOT FOUND",
             status_code=404,
         )
     await put_request_in_detabase(request, endpoint=rest_of_path)
     delay = int(response.items[0].get("delay"))
     await asyncio.sleep(min(19, delay))
-    return JSONResponse(
-        content=response.items[0].get("response"),
-        status_code=int(response.items[0].get("statuscode")),
+    response_type = response.items[0].get("responsetype")
+    response_body = response.items[0].get("response")
+    response_code = int(response.items[0].get("statuscode"))
+
+    if response_type == ResponseType.plaintext.value:
+        return PlainTextResponse(
+            content=response_body,
+            status_code=response_code,
+        )
+    elif response_type == ResponseType.json.value:
+        return JSONResponse(
+            content=response_body,
+            status_code=response_code,
+        )
+    elif response_type == ResponseType.html.value:
+        return HTMLResponse(
+            content=response_body,
+            status_code=response_code,
+        )
+
+    # Default
+    return PlainTextResponse(
+        content=response_body,
+        status_code=response_code,
     )

@@ -7,3 +7,4 @@ class ResponseRequest(BaseModel):
     category: str
     response: str
     delay: int
+    responsetype: str

@@ -59,6 +59,7 @@ async def post_new_request(item: ResponseRequest):
             "category": item.category,
             "response": item.response,
             "delay": item.delay,
+            "responsetype": item.responsetype,
         }
     )
     return JSONResponse(

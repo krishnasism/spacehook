@@ -36,6 +36,16 @@
                             <option value="head">HEAD</option>
                         </select>
                     </div>
+                    <div>
+                        <label for="category"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Response Type</label>
+                        <select id="responsetype" v-model="responsetype"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option value="plaintext" selected>Plain Text</option>
+                            <option value="json">JSON</option>
+                            <option value="html">HTML</option>
+                        </select>
+                    </div>
                     <div class="w-full">
                         <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delay (in seconds)</label>
                         <input type="text" name="delay" id="delay" v-model="delay"
@@ -102,6 +112,7 @@ export default {
             response: '',
             showAddRequestAlert: false,
             delay: '0',
+            responsetype: 'plaintext',
         };
     },
     methods: {
@@ -109,7 +120,7 @@ export default {
             this.$emit("close", true);
         },
         saveRequest() {
-            if (this.endpoint == '' || this.statuscode == '' || this.category == '' || this.response == '') {
+            if (this.endpoint == '' || this.statuscode == '' || this.category == '' || this.response == '' || this.responsetype == '') {
                 this.showAddRequestAlert = true;
                 return;
             }
@@ -120,6 +131,7 @@ export default {
                 category: this.category,
                 response: this.response,
                 delay: this.delay,
+                responsetype: this.responsetype,
             };
             this.$emit('submit', requestData);
         },

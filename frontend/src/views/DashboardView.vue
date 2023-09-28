@@ -278,7 +278,6 @@ export default {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
         this.request = data;
         this.showRequest = true;
       } catch (error) {
