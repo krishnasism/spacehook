@@ -36,7 +36,7 @@
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Cookies</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ request.cookies }}</dd>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" style="overflow: auto; max-width: 100%;">{{ request.cookies }}</dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Body</dt>
