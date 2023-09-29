@@ -9,7 +9,9 @@ responses_collection = deta.Base("responses")
 
 @router.get("/all-requests")
 async def get_all_requests():
-    return requests_collection.fetch(desc=True).items
+    all_requests = requests_collection.fetch(desc=True).items
+    sorted_requests = sorted(all_requests, key=lambda x: x['timestamp'], reverse=True)
+    return sorted_requests
 
 
 @router.get("/request")

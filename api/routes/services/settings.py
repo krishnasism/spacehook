@@ -12,8 +12,11 @@ responses_collection = deta.Base("responses")
 
 @router.get("/")
 async def get_settings():
-    return responses_collection.fetch(desc=True).items
-
+    responses = []
+    for item in responses_collection.fetch(desc=True).items:
+        item['response'] = item['response'][0: min(len(item['response']), 100)] + ("..." if len(item['response']) > 100 else '')
+        responses.append(item)
+    return responses
 
 @router.delete("/hook")
 async def delete_hook(hook_id: str):

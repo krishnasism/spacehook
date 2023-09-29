@@ -39,7 +39,7 @@
                         <td>{{ hook.category }}</td>
                         <td>/api/hook/{{ hook.endpoint }}</td>
                         <td>{{ hook.statuscode }}</td>
-                        <td class="max-h-3 h-3 max-w-xs overflow-x-scroll overflow-y-scroll">{{ hook.response }}</td>
+                        <td class="max-h-3 h-3 max-w-xs" style="overflow: hidden; max-width: 50px; max-height: 50px;">{{ hook.response }}</td>
                         <td>
                             <button @click="deleteHook(hook.key)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
