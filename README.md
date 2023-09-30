@@ -9,14 +9,11 @@ A simple webhook implementation for the [Deta Space Hackathon](https://spacehack
 Since deta.space allows a user to have their own custom url for an app and their own database, and app instance, I thought maybe it would be cool to create this kind of an app to allow an user to have an unique mock webhook or callback url.
 
 
-### [Install on space](https://deta.space/discovery/@krishnasism/spacehook)
+<a href="https://deta.space/discovery/@krishnasism/spacehook" target="_blank">
+    <img src="https://deta.space/buttons/dark.svg" alt="Install" style="height: 100px; width: 250px;">
+</a>
 
-
-## Deploy to deta.space
-
-[![Deploy](https://button.deta.dev/1/svg)](https://go.deta.dev/deploy?repo=https://github.com/krishnasism/spacehook)
-
-## Deploy to deta.space (the boring way)
+## Deploy to your own deta.space dev
 
 Get the space-cli from [here](https://deta.space/docs/en/build/fundamentals/space-cli/)
 
