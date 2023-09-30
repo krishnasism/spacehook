@@ -3,7 +3,7 @@
         <section class="bg-white dark:bg-gray-900">
             <div class="max-w-2xl px-4 py-8 mx-auto lg:py-8">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">Add Hook</h2>
-                <p class="mb-4 max-w-2xl text-sm leading-6 text-gray-500">All hooks are public</p>
+                <p class="mb-4 max-w-2xl text-sm leading-6 text-gray-500">All hooks are public by default</p>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                     <div class="sm:col-span-2">
                         <label for="name"
@@ -37,8 +37,8 @@
                         </select>
                     </div>
                     <div>
-                        <label for="category"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Response Type</label>
+                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Response
+                            Type</label>
                         <select id="responsetype" v-model="responsetype"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option value="plaintext" selected>Plain Text</option>
@@ -47,7 +47,8 @@
                         </select>
                     </div>
                     <div class="w-full">
-                        <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delay (in seconds)</label>
+                        <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delay (in
+                            seconds)</label>
                         <input type="text" name="delay" id="delay" v-model="delay"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="0" required>
@@ -55,13 +56,48 @@
                     <div class="sm:col-span-2">
                         <label for="response"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Response</label>
-                        <textarea id="response" rows="8" v-model="response"
+                        <textarea id="response" rows="4" v-model="response"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Response"></textarea>
                     </div>
+                    <div>
+                        <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Auth
+                            Type</label>
+                        <select id="responsetype" v-model="authtype"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option value="public" selected>No Auth (Public)</option>
+                            <option value="basic">Basic Auth</option>
+                            <option value="bearer">Bearer Token</option>
+                        </select>
+                    </div>
+                    <div v-if="authtype == 'basic'">
+                        <div class="w-full">
+                            <label for="brand"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                            <input type="text" name="basicAuthUsername" id="basicAuthUsername" v-model="basicAuthUsername"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Basic Auth Username">
+                        </div>
+                        <div class="w-full mt-2">
+                            <label for="brand"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                            <input type="text" name="basicAuthPassword" id="basicAuthPassword"
+                                v-model="basicAuthPassword"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Basic Auth Password">
+                        </div>
+                    </div>
+                    <div v-if="authtype == 'bearer'">
+                        <div class="sm:col-span-2">
+                        <label for="accessToken"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bearer Token</label>
+                        <textarea id="accessToken" rows="4" v-model="accessToken"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            placeholder="Bearer Token"></textarea>
+                    </div>
+                    </div>
                 </div>
-                <div id="alert-4"
-                    v-if="showAddRequestAlert"
+                <div id="alert-4" v-if="showAddRequestAlert"
                     class="flex items-center p-4 mb-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
                     role="alert">
                     <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -73,8 +109,7 @@
                     <div class="ml-3 text-sm font-medium">
                         Please fill in all fields!
                     </div>
-                    <button type="button"
-                        @click="showAddRequestAlert = false"
+                    <button type="button" @click="showAddRequestAlert = false"
                         class="ml-auto -mx-1.5 -my-1.5 bg-yellow-50 text-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 p-1.5 hover:bg-yellow-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-yellow-300 dark:hover:bg-gray-700"
                         data-dismiss-target="#alert-4" aria-label="Close">
                         <span class="sr-only">Close</span>
@@ -113,6 +148,10 @@ export default {
             showAddRequestAlert: false,
             delay: '0',
             responsetype: 'plaintext',
+            authtype: 'public',
+            basicAuthUsername: '',
+            basicAuthPassword: '',
+            accessToken: '',
         };
     },
     methods: {
@@ -132,6 +171,10 @@ export default {
                 response: this.response,
                 delay: this.delay,
                 responsetype: this.responsetype,
+                authtype: this.authtype,
+                basic_auth_username: this.basicAuthUsername,
+                basic_auth_password: this.basicAuthPassword,
+                access_token: this.accessToken,
             };
             this.$emit('submit', requestData);
         },
@@ -141,10 +184,10 @@ export default {
 
 <style>
 .purple-color {
-  background-color: rgb(168 85 247);
+    background-color: rgb(168 85 247);
 }
 
 .purple-color:hover {
-  background-color: rgb(126 34 206);
+    background-color: rgb(126 34 206);
 }
 </style>

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Form
+from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 from rrequests.models import ResponseRequest
 
@@ -14,9 +14,12 @@ responses_collection = deta.Base("responses")
 async def get_settings():
     responses = []
     for item in responses_collection.fetch(desc=True).items:
-        item['response'] = item['response'][0: min(len(item['response']), 100)] + ("..." if len(item['response']) > 100 else '')
+        item["response"] = item["response"][0 : min(len(item["response"]), 100)] + (
+            "..." if len(item["response"]) > 100 else ""
+        )
         responses.append(item)
     return responses
+
 
 @router.delete("/hook")
 async def delete_hook(hook_id: str):
@@ -63,6 +66,10 @@ async def post_new_request(item: ResponseRequest):
             "response": item.response,
             "delay": item.delay,
             "responsetype": item.responsetype,
+            "authtype": item.authtype,
+            "basic_auth_username": item.basic_auth_username,
+            "basic_auth_password": item.basic_auth_password,
+            "access_token": item.access_token,
         }
     )
     return JSONResponse(

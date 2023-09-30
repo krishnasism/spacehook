@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Header, HTTPException
 from fastapi.responses import JSONResponse, HTMLResponse, PlainTextResponse
 from db.detabase import put_request_in_detabase
 from deta import Deta
 import asyncio
-from utils.enums import ResponseType
+from utils.enums import ResponseType, AuthType
+import base64
 
 router = APIRouter()
 deta = Deta()
@@ -75,41 +76,105 @@ async def receive_put_request(request: Request):
 
 
 @router.get("/{rest_of_path:path}")
-async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path, "get")
+async def serve_my_app(
+    request: Request,
+    rest_of_path: str,
+    authorization: str = Header(None),
+):
+    return await handle_rest_of_path(
+        request,
+        rest_of_path,
+        "get",
+        authorization,
+    )
 
 
 @router.post("/{rest_of_path:path}")
-async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path, "post")
+async def serve_my_app(
+    request: Request,
+    rest_of_path: str,
+    authorization: str = Header(None),
+):
+    return await handle_rest_of_path(request, rest_of_path, "post", authorization)
 
 
 @router.patch("/{rest_of_path:path}")
-async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path, "patch")
+async def serve_my_app(
+    request: Request,
+    rest_of_path: str,
+    authorization: str = Header(None),
+):
+    return await handle_rest_of_path(request, rest_of_path, "patch", authorization)
 
 
 @router.delete("/{rest_of_path:path}")
-async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path, "delete")
+async def serve_my_app(
+    request: Request,
+    rest_of_path: str,
+    authorization: str = Header(None),
+):
+    return await handle_rest_of_path(request, rest_of_path, "delete", authorization)
 
 
 @router.put("/{rest_of_path:path}")
-async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path, "put")
+async def serve_my_app(
+    request: Request,
+    rest_of_path: str,
+    authorization: str = Header(None),
+):
+    return await handle_rest_of_path(request, rest_of_path, "put", authorization)
 
 
 @router.head("/{rest_of_path:path}")
-async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path, "head")
+async def serve_my_app(
+    request: Request,
+    rest_of_path: str,
+    authorization: str = Header(None),
+):
+    return await handle_rest_of_path(request, rest_of_path, "head", authorization)
 
 
 @router.options("/{rest_of_path:path}")
-async def serve_my_app(request: Request, rest_of_path: str):
-    return await handle_rest_of_path(request, rest_of_path, "options")
+async def serve_my_app(
+    request: Request,
+    rest_of_path: str,
+    authorization: str = Header(None),
+):
+    return await handle_rest_of_path(request, rest_of_path, "options", authorization)
 
 
-async def handle_rest_of_path(request: Request, rest_of_path: str, category: str):
+async def verify_auth(response, authorization):
+    authtype = response.get("authtype")
+    if authtype == AuthType.basic_auth.value:
+        if not authorization:
+            return False
+        request_auth_type, encoded = authorization.split()
+        if request_auth_type.lower() != authtype:
+            return False
+        decoded_token = base64.b64decode(encoded).decode("utf-8")
+        username, password = decoded_token.split(":")
+        if not (
+            username == response.get("basic_auth_username")
+            and password == response.get("basic_auth_password")
+        ):
+            return False
+    if authtype == AuthType.bearer_token.value:
+        if not authorization:
+            return False
+        request_auth_type, token = authorization.split()
+        if request_auth_type.lower() != AuthType.bearer_token.value:
+            return False
+        if token != response.get("access_token"):
+            return False
+    return True
+
+
+async def handle_rest_of_path(
+    request: Request,
+    rest_of_path: str,
+    category: str,
+    authorization: Header,
+):
     response = responses_collection.fetch(
         {"endpoint": rest_of_path, "category": category}
     )
@@ -118,6 +183,10 @@ async def handle_rest_of_path(request: Request, rest_of_path: str, category: str
             content="NOT FOUND",
             status_code=404,
         )
+    auth_status = await verify_auth(response.items[0], authorization)
+    if not auth_status:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
     await put_request_in_detabase(request, endpoint=rest_of_path)
     delay = int(response.items[0].get("delay"))
     await asyncio.sleep(min(19, delay))

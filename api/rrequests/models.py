@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from typing import Optional
+from utils.enums import AuthType
 
 
 class ResponseRequest(BaseModel):
@@ -8,3 +10,7 @@ class ResponseRequest(BaseModel):
     response: str
     delay: int
     responsetype: str
+    authtype: Optional[str] = AuthType.public.value
+    basic_auth_username: Optional[str] = ""
+    basic_auth_password: Optional[str] = ""
+    access_token: Optional[str] = ""
