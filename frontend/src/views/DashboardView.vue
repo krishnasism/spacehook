@@ -76,7 +76,7 @@
     </Transition>
 
     <div class="fixed bottom-0 left-0 w-full p-4 flex justify-center items-center gap-4">
-      <button type="button" data-tooltip-target="tooltip-all-hooks" data-tooltip-placement="left" @click="showAllHooks"
+      <button type="button" @click="showAllHooks"
         class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 dark:hover:text-white shadow-sm dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6">
@@ -85,7 +85,7 @@
         </svg>
         <span class="sr-only">All Hooks</span>
       </button>
-      <button type="button" data-tooltip-target="tooltip-add-hook" data-tooltip-placement="left" @click="openAddRequest"
+      <button type="button" @click="openAddRequest"
         class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 dark:hover:text-white shadow-sm dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6">
