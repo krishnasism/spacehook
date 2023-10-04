@@ -57,7 +57,7 @@
       <div class="fixed inset-0 flex items-center justify-center z-10 bg-gray-50 bg-opacity-50"
         v-if="showAddRequestModal">
         <div class="bg-white rounded-lg shadow-lg p-4">
-          <AddRequest @close="showAddRequestModal = false" @submit="submitNewRequest" :hook="editingHook"></AddRequest>
+          <AddRequest @close="showAddRequestModal = false; editingHook = null;" @submit="submitNewRequest" :hook="editingHook"></AddRequest>
         </div>
       </div>
     </transition>
