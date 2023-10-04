@@ -156,6 +156,7 @@ export default {
       this.showAddRequestModal = false;
       this.showHooksModal = false;
       this.showRequest = false;
+      this.editingHook = null;
 
     },
     async openAddRequest(evt) {
