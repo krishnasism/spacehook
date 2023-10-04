@@ -14,3 +14,4 @@ class ResponseRequest(BaseModel):
     basic_auth_username: Optional[str] = ""
     basic_auth_password: Optional[str] = ""
     access_token: Optional[str] = ""
+    hook_id: Optional[str] = ""

@@ -48,7 +48,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <HooksList :hooks="hooks" v-if="hooks != null && showHooksModal" @hook-delete="deleteHook"
+          <HooksList :hooks="hooks" v-if="hooks != null && showHooksModal" @hook-delete="deleteHook" @hook-edit="editHook"
             :hooksLoading="hooksLoading"></HooksList>
         </div>
       </div>
@@ -57,7 +57,7 @@
       <div class="fixed inset-0 flex items-center justify-center z-10 bg-gray-50 bg-opacity-50"
         v-if="showAddRequestModal">
         <div class="bg-white rounded-lg shadow-lg p-4">
-          <AddRequest @close="showAddRequestModal = false" @submit="submitNewRequest"></AddRequest>
+          <AddRequest @close="showAddRequestModal = false" @submit="submitNewRequest" :hook="editingHook"></AddRequest>
         </div>
       </div>
     </transition>
@@ -129,6 +129,7 @@ export default {
       hooksLoading: false,
       failureToastMessage: '',
       showFailureToast: false,
+      editingHookId: null,
     }
   },
   setup() {
@@ -179,6 +180,10 @@ export default {
           this.failureToastMessage = 'Unable to add new request!';
         } else {
           this.showAddRequestModal = false;
+          if (this.editingHook) {
+            this.editingHook = null;
+            this.loadHooks();
+          }
         }
       } catch (error) {
         console.error('Error:', error);
@@ -243,6 +248,25 @@ export default {
           console.error('Request failed:', response.statusText);
         } else {
           this.loadHooks();
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    },
+    async editHook(hookId) {
+      try {
+        const apiUrl = '/api/settings/hook?hook_id=' + hookId;
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+          },
+        });
+        if (response.status != 200) {
+          console.error('Request failed:', response.statusText);
+        } else {
+          this.editingHook = await response.json();
+          this.showAddRequestModal = true;
         }
       } catch (error) {
         console.error('Error:', error);

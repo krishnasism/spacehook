@@ -21,6 +21,15 @@ async def get_settings():
     return responses
 
 
+@router.get("/hook")
+async def get_hook(hook_id: str):
+    hook = responses_collection.get(hook_id)
+    return JSONResponse(
+        content=hook,
+        status_code=200,
+    )
+
+
 @router.delete("/hook")
 async def delete_hook(hook_id: str):
     responses_collection.delete(hook_id)
@@ -53,6 +62,8 @@ async def delete_request(request_id: str = Query()):
 async def post_new_request(item: ResponseRequest):
     updated = False
     endpoint = item.endpoint.strip("/")
+    if item.hook_id:
+        responses_collection.delete(item.hook_id)
     data = responses_collection.fetch({"endpoint": endpoint, "category": item.category})
     if data.count > 0:
         updated = True

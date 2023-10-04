@@ -138,6 +138,11 @@
 export default {
     name: 'AddRequest',
     props: {
+        hook: {
+            type: Object,
+            default: null,
+            required: false,
+        }
     },
     data() {
         return {
@@ -152,7 +157,23 @@ export default {
             basicAuthUsername: '',
             basicAuthPassword: '',
             accessToken: '',
+            hookId: '',
         };
+    },
+    mounted() {
+      if (this.hook) {
+            this.endpoint = this.hook.endpoint;
+            this.statuscode = this.hook.statuscode;
+            this.category = this.hook.category;
+            this.response = this.hook.response;
+            this.delay = this.hook.delay;
+            this.responsetype =  this.hook.responsetype;
+            this.authtype = this.hook.authtype;
+            this.basicAuthUsername = this.hook.basic_auth_username;
+            this.basicAuthPassword = this.hook.basic_auth_password;
+            this.accessToken = this.hook.access_token;
+            this.hookId = this.hook.key;
+      }  
     },
     methods: {
         closeModal() {
@@ -175,6 +196,7 @@ export default {
                 basic_auth_username: this.basicAuthUsername,
                 basic_auth_password: this.basicAuthPassword,
                 access_token: this.accessToken,
+                hook_id: this.hookId,
             };
             this.$emit('submit', requestData);
         },
