@@ -5,7 +5,7 @@
     <div v-else>
         <div v-if="hooks.length == 0" class="m-4">No hooks added..</div>
         <div v-else class="relative overflow-x-auto">
-            <h3 class="text-base font-semibold leading-7 text-gray-900">Hooks</h3>
+            <h3 class="text-base font-semibold leading-7 text-gray-900 mb-2">Hooks</h3>
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 h-full">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -47,7 +47,15 @@
                             </button>
                         </td>
                         <td>{{ hook.category }}</td>
-                        <td>/api/hook/{{ hook.endpoint }}</td>
+                        <td><a v-if="hook.category == 'get'" :href="'/api/hook/' + hook.endpoint" target="_blank"><span class="flex text-purple-800"><svg
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                    </svg>
+                                    /api/hook/{{ hook.endpoint }}</span></a>
+                                <span v-else class="ml-2">/api/hook/{{ hook.endpoint }}</span>
+                                </td>
                         <td>{{ hook.statuscode }}</td>
                         <td class="max-h-3 h-3 max-w-xs" style="overflow: hidden; max-width: 50px; max-height: 50px;">{{
                             hook.response }}</td>

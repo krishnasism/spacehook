@@ -15,3 +15,8 @@ class ResponseRequest(BaseModel):
     basic_auth_password: Optional[str] = ""
     access_token: Optional[str] = ""
     hook_id: Optional[str] = ""
+
+
+class SettingsRequest(BaseModel):
+    default_endpoints_enabled: bool
+    unset_endpoints_enabled: bool

@@ -1,7 +1,13 @@
 <template>
     <div>
         <section class="bg-white dark:bg-gray-900">
-            <div class="max-w-2xl px-4 py-8 mx-auto lg:py-8">
+            <div class="relative max-w-2xl px-4 py-8 mx-auto lg:py-8">
+                <button class="absolute right- text-gray-500 hover:text-gray-700 top-0 right-0" @click="closeModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ hook ? 'Edit' : 'Add' }} Hook</h2>
                 <p class="mb-4 max-w-2xl text-sm leading-6 text-gray-500">All hooks are public by default</p>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
