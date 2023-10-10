@@ -10,7 +10,7 @@ requests_collection = deta.Base("requests")
 async def put_request_in_detabase(request: Request, endpoint="/"):
     request_data = {
         "method": request.method,
-        "url": str(request.url).replace("/hook", "/api/hook"),
+        "url": str(request.url).replace("api/hook/", "/api/hook/"),
         "headers": dict(request.headers),
         "client": str(request.client),
         "cookies": dict(request.cookies),
