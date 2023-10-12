@@ -59,12 +59,24 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="0" required>
                     </div>
-                    <div class="sm:col-span-2">
-                        <label for="response"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Response</label>
-                        <textarea id="response" rows="4" v-model="response"
+                    <div class="sm:col-span-2 mt-8">
+                        <label for="response" class="block text-sm font-medium text-gray-900 dark:text-white">
+                            <div class="grid gap-4" :class="customResponse? 'mb-4' : ''">
+                                <div class="sm:col-span-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" checked v-model="customResponse" class="sr-only peer">
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600">
+                                        </div>
+                                        <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Custom Response</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </label>
+                        <textarea v-if="customResponse" id="response" rows="4" v-model="response"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Response"></textarea>
+                        <p v-else class="max-w-2xl text-sm leading-6 text-gray-500">Request will be echoed</p>
                     </div>
                     <div>
                         <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Auth
@@ -87,20 +99,19 @@
                         <div class="w-full mt-2">
                             <label for="brand"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input type="text" name="basicAuthPassword" id="basicAuthPassword"
-                                v-model="basicAuthPassword"
+                            <input type="text" name="basicAuthPassword" id="basicAuthPassword" v-model="basicAuthPassword"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Basic Auth Password">
                         </div>
                     </div>
                     <div v-if="authtype == 'bearer'">
                         <div class="sm:col-span-2">
-                        <label for="accessToken"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bearer Token</label>
-                        <textarea id="accessToken" rows="4" v-model="accessToken"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Bearer Token"></textarea>
-                    </div>
+                            <label for="accessToken"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bearer Token</label>
+                            <textarea id="accessToken" rows="4" v-model="accessToken"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Bearer Token"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div id="alert-4" v-if="showAddRequestAlert"
@@ -164,29 +175,31 @@ export default {
             basicAuthPassword: '',
             accessToken: '',
             hookId: '',
+            customResponse: true,
         };
     },
     mounted() {
-      if (this.hook) {
+        if (this.hook) {
             this.endpoint = this.hook.endpoint;
             this.statuscode = this.hook.statuscode;
             this.category = this.hook.category;
             this.response = this.hook.response;
             this.delay = this.hook.delay;
-            this.responsetype =  this.hook.responsetype;
+            this.responsetype = this.hook.responsetype;
             this.authtype = this.hook.authtype;
             this.basicAuthUsername = this.hook.basic_auth_username;
             this.basicAuthPassword = this.hook.basic_auth_password;
             this.accessToken = this.hook.access_token;
             this.hookId = this.hook.key;
-      }  
+            this.customResponse = this.hook.custom_response == null ? true : this.hook.custom_response;
+        }
     },
     methods: {
         closeModal() {
             this.$emit("close", true);
         },
         saveRequest() {
-            if (this.endpoint == '' || this.statuscode == '' || this.category == '' || this.response == '' || this.responsetype == '') {
+            if (this.endpoint == '' || this.statuscode == '' || this.category == '' || (this.customResponse && this.response == '') || this.responsetype == '') {
                 this.showAddRequestAlert = true;
                 return;
             }
@@ -203,6 +216,7 @@ export default {
                 basic_auth_password: this.basicAuthPassword,
                 access_token: this.accessToken,
                 hook_id: this.hookId,
+                custom_response: this.customResponse,
             };
             this.$emit('submit', requestData);
         },

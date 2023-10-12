@@ -4,8 +4,10 @@ from db.detabase import put_request_in_detabase
 from deta import Deta
 import asyncio
 from utils.enums import ResponseType, AuthType
+from utils.utils import get_request_dict
 import base64
 from utils.variables import DEFAULT_USER_SETTINGS, DEFAULT_RESPONSE_OBJECT
+import json
 
 router = APIRouter()
 deta = Deta()
@@ -54,8 +56,9 @@ async def handle_root_path(request: Request):
     user_settings = DEFAULT_USER_SETTINGS
     if _settings.count > 0:
         user_settings = _settings.items[0]
+    request_data = await get_request_dict(request)
     if user_settings.get("default_endpoints_enabled"):
-        await put_request_in_detabase(request)
+        await put_request_in_detabase(request_data)
         return PlainTextResponse(
             content="OK",
             status_code=200,
@@ -198,13 +201,16 @@ async def handle_rest_of_path(
     auth_status = await verify_auth(response_item, authorization)
     if not auth_status:
         raise HTTPException(status_code=401, detail="Invalid credentials")
-
-    await put_request_in_detabase(request, endpoint=rest_of_path)
+    request_data = await get_request_dict(request)
+    await put_request_in_detabase(request_data, endpoint=rest_of_path)
     delay = int(response_item.get("delay"))
     await asyncio.sleep(min(19, delay))
     response_type = response_item.get("responsetype")
     response_body = response_item.get("response")
     response_code = int(response_item.get("statuscode"))
+
+    if not response_item.get("custom_response", True):
+        response_body = json.dumps(request_data)
 
     if response_type == ResponseType.plaintext.value:
         return PlainTextResponse(

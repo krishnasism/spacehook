@@ -15,6 +15,7 @@ class ResponseRequest(BaseModel):
     basic_auth_password: Optional[str] = ""
     access_token: Optional[str] = ""
     hook_id: Optional[str] = ""
+    custom_response: Optional[bool] = True
 
 
 class SettingsRequest(BaseModel):

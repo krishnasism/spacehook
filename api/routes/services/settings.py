@@ -83,6 +83,7 @@ async def post_new_request(item: ResponseRequest):
             "basic_auth_username": item.basic_auth_username,
             "basic_auth_password": item.basic_auth_password,
             "access_token": item.access_token,
+            "custom_response": item.custom_response,
         }
     )
     return JSONResponse(
