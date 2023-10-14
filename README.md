@@ -1,8 +1,9 @@
 # spacehook
+Simple and easy-to-use mock API Endpoints. Create mock endpoints quickly and without hassle. Don't wait for your backend to be built, to start building out your frontend.
+
+Created for the [Deta Space Hackathon](https://spacehack23.deta.dev/).
 
 ![spacehook_small](https://github.com/krishnasism/spacehook/assets/21293324/f7443f23-0b45-413f-aeee-c42d85bc5e3f)
-
-A simple webhook implementation for the [Deta Space Hackathon](https://spacehack23.deta.dev/).
 
 ### Why?
 
