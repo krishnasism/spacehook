@@ -8,7 +8,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Swagger File</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Swagger File<span class="bg-gray-100 text-gray-800 text-xs font-medium ml-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">beta</span></h2>
                 <p class="mb-4 max-w-2xl text-sm leading-6 text-gray-500">Convert a swagger file to mock endpoints</p>
                 <textarea id="swaggerInput" rows="8" v-model="swaggerYaml"
                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
