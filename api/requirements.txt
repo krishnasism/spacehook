@@ -4,6 +4,5 @@ pydantic==1.10.4
 uvicorn==0.20.0
 deta==1.2.0
 black==23.1.0
-PyYAML==6.0.1
 swagger-parser==1.0.2
 six==1.16.0
