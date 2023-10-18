@@ -14,6 +14,17 @@ Since deta.space allows a user to have their own custom url for an app and their
     <img src="https://deta.space/buttons/dark.svg" alt="Install" style="height: 100px; width: 250px;">
 </a>
 
+## Features
+⭐ Mock API endpoints in an instant!
+
+⭐ Forever open source and free to use!
+
+⭐ Data privacy ensured by Deta!
+
+⭐ Import your Swagger files!
+
+⭐ Create as many instances as you like -> Unlimited endpoints!
+
 ## Deploy to your own deta.space dev
 
 Get the space-cli from [here](https://deta.space/docs/en/build/fundamentals/space-cli/)
