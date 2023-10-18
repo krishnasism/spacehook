@@ -21,3 +21,7 @@ class ResponseRequest(BaseModel):
 class SettingsRequest(BaseModel):
     default_endpoints_enabled: bool
     unset_endpoints_enabled: bool
+
+
+class SwaggerIngestRequest(BaseModel):
+    swagger_yaml: str

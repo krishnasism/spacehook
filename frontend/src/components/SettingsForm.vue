@@ -2,7 +2,7 @@
     <div>
         <section class="bg-white dark:bg-gray-900">
             <div class="max-w-2xl px-4 py-8 mx-auto lg:py-8 relative">
-                <button class="absolute right- text-gray-500 hover:text-gray-700 top-0 right-0" @click="closeModal">
+                <button class="absolute right-0 text-gray-500 hover:text-gray-700 top-0 right-0" @click="closeModal">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />

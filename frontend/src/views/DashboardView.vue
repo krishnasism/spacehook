@@ -69,6 +69,14 @@
         </div>
       </div>
     </transition>
+    <transition name="modal-fade" mode="out-in">
+      <div class="fixed inset-0 flex items-center justify-center z-10 bg-gray-50 bg-opacity-50"
+        v-if="showSwaggerFileInput">
+        <div class="bg-white rounded-lg shadow-lg p-4">
+          <SwaggerFileInput @close="showSwaggerFileInput = false;" @submit="ingestSwaggerFile" :loading="swaggerFileIngesting"></SwaggerFileInput>
+        </div>
+      </div>
+    </transition>
     <div v-if="loading || loadingInner"
       style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; justify-content: center; align-items: center;">
       <LoadingCircle />
@@ -99,7 +107,6 @@
           class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-
         <span class="sr-only">New Hook</span>
       </button>
       <button type="button" @click="showSettings"
@@ -111,6 +118,15 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
         <span class="sr-only">Settings</span>
+      </button>
+      <button type="button" @click="showSwaggerInput"
+        class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 dark:hover:text-white shadow-sm dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+        </svg>
+        <span class="sr-only">Swagger File</span>
       </button>
     </div>
   </div>
@@ -124,6 +140,7 @@ import HooksList from "@/components/HooksList.vue";
 import LoadingCircle from "@/components/LoadingCircle.vue";
 import FailureToast from "@/components/FailureToast.vue";
 import SettingsForm from "@/components/SettingsForm.vue";
+import SwaggerFileInput from "@/components/SwaggerFileInput.vue";
 
 export default {
   components: {
@@ -134,6 +151,7 @@ export default {
     LoadingCircle,
     FailureToast,
     SettingsForm,
+    SwaggerFileInput,
   },
   data() {
     return {
@@ -153,6 +171,8 @@ export default {
       editingHook: null,
       showSettingsForm: false,
       settings: null,
+      showSwaggerFileInput: false,
+      swaggerFileIngesting: false,
     }
   },
   setup() {
@@ -181,6 +201,7 @@ export default {
       this.showRequest = false;
       this.editingHook = null;
       this.showSettingsForm = false;
+      this.showSwaggerFileInput = false;
     },
     async openAddRequest(evt) {
       if (this.showAddRequestModal) {
@@ -335,7 +356,6 @@ export default {
       }
     },
     async updateSettings(_settings) {
-      console.log(_settings)
       try {
         const apiUrl = '/api/settings/user-settings';
         const response = await fetch(apiUrl, {
@@ -355,9 +375,39 @@ export default {
       } catch (error) {
         console.error('Error:', error);
       }
-    }
+    },
+    async showSwaggerInput() {
+      this.showSwaggerFileInput = true;
+    },
+    async ingestSwaggerFile(swaggerYaml) {
+      try {
+        this.swaggerFileIngesting = true;
+        const apiUrl = '/api/settings/swagger';
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+          },
+          body: JSON.stringify({
+            swagger_yaml: swaggerYaml,
+          }),
+        });
+        if (response.status != 200) {
+          const response_data = await response.json();
+          this.showFailureToast = true;
+          this.failureToastMessage = 'Unable to ingest swagger file: ' + response_data['error'].slice(0, 50) + '!';
+        } else {
+          this.showSwaggerFileInput = false;
+          this.showAllHooks();
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        this.swaggerFileIngesting = false;
+      }
+    },
   }
-};
+}
 
 </script>
 <style scoped>

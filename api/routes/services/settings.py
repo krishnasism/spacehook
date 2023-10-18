@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Form
 from fastapi.responses import JSONResponse
-from rrequests.models import ResponseRequest, SettingsRequest
+from rrequests.models import ResponseRequest, SettingsRequest, SwaggerIngestRequest
 from utils.variables import DEFAULT_USER_SETTINGS
-
 from deta import Deta
+from swagger_parser import SwaggerParser
 
 router = APIRouter()
 deta = Deta()
@@ -123,3 +123,70 @@ async def get_user_settings():
         content=settings,
         status_code=200,
     )
+
+
+@router.post("/swagger")
+async def ingest_swagger(swagger_ingest_request: SwaggerIngestRequest):
+    try:
+        responses = await get_objects_from_swagger(swagger_ingest_request.swagger_yaml)
+        for response in responses:
+            data = responses_collection.fetch(
+                {
+                    "endpoint": response.get("endpoint"),
+                    "category": response.get("category"),
+                }
+            )
+            if data.count > 0:
+                for existing_item in data.items:
+                    responses_collection.delete(existing_item.get("key"))
+            responses_collection.put(response)
+        return JSONResponse(
+            content={
+                "success": True,
+            },
+            status_code=200,
+        )
+    except Exception as e:
+        return JSONResponse(
+            content={
+                "success": False,
+                "error": str(e),
+            },
+            status_code=500,
+        )
+
+
+async def get_objects_from_swagger(swagger: str) -> list:
+    swagger_data = SwaggerParser(swagger_yaml=swagger)
+    swagger_paths = swagger_data.paths
+    responses = []
+    for _, path in enumerate(swagger_paths):
+        path_data = swagger_paths[path]
+        for _, method in enumerate(path_data):
+            method_data = path_data[method]
+            for _, status_code in enumerate(method_data.get("responses", []) or []):
+                parameters = method_data.get("parameters", [])
+                endpoint = path
+                for _, param in enumerate(parameters):
+                    if parameters.get(param, {}).get("type") == "string":
+                        endpoint = endpoint.replace("{" + param + "}", "example")
+                    else:
+                        endpoint = endpoint.replace("{" + param + "}", "0")
+                if path != "/":
+                    endpoint = endpoint.strip("/")
+                responses.append(
+                    {
+                        "endpoint": endpoint,
+                        "statuscode": status_code,
+                        "category": method,
+                        "response": method_data.get("description", "OK") or "OK",
+                        "delay": 0,
+                        "responsetype": "json",
+                        "authtype": "public",
+                        "basic_auth_username": "",
+                        "basic_auth_password": "",
+                        "access_token": "",
+                        "custom_response": True,
+                    }
+                )
+    return responses
