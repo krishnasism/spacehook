@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 fastapi = {extras = ["httpx"], version = "==0.92.0"}
-uvicorn = {extras = ["standard"], version = "==0.20.0"}
+uvicorn = "==0.20.0"
 pydantic = "==1.10.4"
 httpx = "==0.23.2"
 deta = "==1.2.0"

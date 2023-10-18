@@ -6,6 +6,7 @@ import asyncio
 from utils.enums import ResponseType, AuthType
 from utils.utils import get_request_dict
 import base64
+from simpledb import get_collection
 from utils.variables import DEFAULT_USER_SETTINGS, DEFAULT_RESPONSE_OBJECT
 import json
 
@@ -233,3 +234,12 @@ async def handle_rest_of_path(
         content=response_body,
         status_code=response_code,
     )
+
+@router.options("/test-simpledb")
+async def serve_my_app(
+    request: Request,
+    key: str,
+    value: str,
+):
+    return await handle_rest_of_path(request, rest_of_path, "options", authorization)
+
