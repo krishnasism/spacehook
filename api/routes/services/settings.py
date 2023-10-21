@@ -3,7 +3,11 @@ from fastapi.responses import JSONResponse
 from rrequests.models import ResponseRequest, SettingsRequest, SwaggerIngestRequest
 from utils.variables import DEFAULT_USER_SETTINGS
 from deta import Deta
-from swagger_parser import SwaggerParser
+from yaml import load
+try:
+    from yaml import CLoader as Loader
+except ImportError:
+    from yaml import Loader
 
 router = APIRouter()
 deta = Deta()
@@ -157,8 +161,8 @@ async def ingest_swagger(swagger_ingest_request: SwaggerIngestRequest):
 
 
 async def get_objects_from_swagger(swagger: str) -> list:
-    swagger_data = SwaggerParser(swagger_yaml=swagger)
-    swagger_paths = swagger_data.paths
+    swagger_data = load(swagger, Loader=Loader)
+    swagger_paths = swagger_data.get('paths')
     responses = []
     for _, path in enumerate(swagger_paths):
         path_data = swagger_paths[path]
