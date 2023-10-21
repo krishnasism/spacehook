@@ -168,6 +168,8 @@ async def get_objects_from_swagger(swagger: str) -> list:
         path_data = swagger_paths[path]
         for _, method in enumerate(path_data):
             method_data = path_data[method]
+            if not isinstance(method_data, dict):
+                continue
             for _, status_code in enumerate(method_data.get("responses", []) or []):
                 parameters = method_data.get("parameters", [])
                 endpoint = path
