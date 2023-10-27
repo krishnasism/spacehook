@@ -172,13 +172,7 @@ async def get_objects_from_swagger(swagger: str) -> list:
             if not isinstance(method_data, dict):
                 continue
             for _, status_code in enumerate(method_data.get("responses", []) or []):
-                parameters = method_data.get("parameters", [])
                 endpoint = path
-                for _, param in enumerate(parameters):
-                    if parameters.get(param, {}).get("type") == "string":
-                        endpoint = endpoint.replace("{" + param + "}", "example")
-                    else:
-                        endpoint = endpoint.replace("{" + param + "}", "0")
                 if path != "/":
                     endpoint = endpoint.strip("/")
                 responses.append(

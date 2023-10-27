@@ -2,7 +2,8 @@
   <div>
     <div class="px-4 sm:px-0">
       <h3 class="text-base font-semibold leading-7 text-gray-900">Request</h3>
-      <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">{{ request.url }}</p>
+      <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500"
+        style="overflow: scroll; max-width: 100%; max-height: 50px;">{{ request.url }}</p>
     </div>
     <div class="mt-6 border-t border-gray-100">
       <dl class="divide-y divide-gray-100">
@@ -19,10 +20,6 @@
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ request.method }}</dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900">Query Params</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ request.query_params }}</dd>
-        </div>
-        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Remote address</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ request.remote_address }}</dd>
         </div>
@@ -36,14 +33,24 @@
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Cookies</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" style="overflow: auto; max-width: 100%;">{{ request.cookies }}</dd>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" style="overflow: auto; max-width: 100%;">
+            {{ request.cookies }}</dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Body</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
             style="max-height: 200px; overflow: scroll;" v-html="request.body"></dd>
         </div>
-
+        <div class="px-4 sm:px-0">
+          <h3 class="text-base font-semibold leading-7 text-gray-900 my-4">Query Params</h3>
+        </div>
+        <div v-for="(value, key) in request.query_params" :key="key"
+          class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">{{ key }}</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" style="overflow: auto; max-width: 100%;">
+            {{ value }}
+          </dd>
+        </div>
         <div class="px-4 sm:px-0">
           <h3 class="text-base font-semibold leading-7 text-gray-900 my-4">Headers</h3>
         </div>
