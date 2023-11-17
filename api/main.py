@@ -13,8 +13,7 @@ def get_application() -> FastAPI:
 app = get_application()
 
 origins = [
-    "http://localhost",
-    "http://localhost:4201",
+    "*",
 ]
 
 app.add_middleware(
