@@ -19,11 +19,13 @@ Since deta.space allows a user to have their custom URL for an app and their dat
 
 ⭐ Forever open source and free to use!
 
-⭐ Data privacy ensured by Deta!
-
 ⭐ Import your Swagger files to automatically create mock endpoints!
 
-⭐ [deta only feature] Create as many instances as you like -> Unlimited endpoints!
+[deta only features]
+
+⭐ Data privacy ensured by Deta!
+
+⭐ Create as many instances as you like -> Unlimited endpoints!
 
 ## Deploy to your deta.space dev
 
