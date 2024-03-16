@@ -7,7 +7,7 @@ Created for the [Deta Space Hackathon](https://spacehack23.deta.dev/).
 
 ### Why?
 
-Since deta.space allows a user to have their own custom url for an app and their own database, and app instance, I thought maybe it would be cool to create this kind of an app to allow an user to have an unique mock webhook or callback url.
+Since deta.space allows a user to have their custom URL for an app and their database, and app instance, I thought maybe it would be cool to create this kind of an app to allow a user to have a unique mock webhook or callback URL.
 
 
 <a href="https://deta.space/discovery/@krishnasism/spacehook" target="_blank">
@@ -21,11 +21,11 @@ Since deta.space allows a user to have their own custom url for an app and their
 
 ⭐ Data privacy ensured by Deta!
 
-⭐ Import your Swagger files!
+⭐ Import your Swagger files to automatically create mock endpoints!
 
 ⭐ Create as many instances as you like -> Unlimited endpoints!
 
-## Deploy to your own deta.space dev
+## Deploy to your deta.space dev
 
 Get the space-cli from [here](https://deta.space/docs/en/build/fundamentals/space-cli/)
 
