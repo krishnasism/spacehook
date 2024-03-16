@@ -23,7 +23,7 @@ Since deta.space allows a user to have their custom URL for an app and their dat
 
 ⭐ Import your Swagger files to automatically create mock endpoints!
 
-⭐ Create as many instances as you like -> Unlimited endpoints!
+⭐ [deta only feature] Create as many instances as you like -> Unlimited endpoints!
 
 ## Deploy to your deta.space dev
 
